@@ -1,4 +1,4 @@
-package com.twitter.rystsov;
+package com.twitter.rystsov.hdfs;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FSDataOutputStream;
@@ -13,7 +13,7 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-public class SimpleHdfsWrite
+public class SimpleWrite
 {
     public static void main( String[] args ) throws URISyntaxException, IOException {
         String from = args[0];
