@@ -29,7 +29,7 @@ public class SimpleWrite
         conf.set("dfs.replication","1");
 
         FileSystem fs = FileSystem.get(new URI(to), conf);
-        FSDataOutputStream dst = fs.create(new Path(to), true);
+        FSDataOutputStream dst = fs.create(new Path(to), /* override */ false);
 
         // true => closes both src and dst
         IOUtils.copyBytes(src, dst, 4096, true);
