@@ -1,5 +1,6 @@
 package com.twitter.rystsov.mr;
 
+import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
@@ -10,6 +11,8 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
+import org.apache.hadoop.util.Tool;
+import org.apache.hadoop.util.ToolRunner;
 
 import java.io.IOException;
 
@@ -18,7 +21,7 @@ import java.io.IOException;
  * How to run:
  *   hadoop jar target/learning-hadoop-1.0-SNAPSHOT.jar com.twitter.rystsov.mr.WordCount src dst
  */
-public class WordCount {
+public class WordCount extends Configured implements Tool{
     public static class WordCountMapper extends Mapper<LongWritable, Text, Text, LongWritable> {
         @Override
         protected void map(LongWritable key, Text value,
@@ -43,8 +46,9 @@ public class WordCount {
         }
     }
 
-    public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException {
-        Job job = new Job();
+    @Override
+    public int run(String[] args) throws Exception {
+        Job job = new Job(getConf());
         job.setJarByClass(WordCount.class);
 
         FileInputFormat.addInputPath(job, new Path(args[0]));
@@ -63,5 +67,10 @@ public class WordCount {
         /* end defaults */
 
         job.waitForCompletion(true);
+        return 0;
+    }
+
+    public static void main(String[] args) throws Exception, InterruptedException {
+        ToolRunner.run(new WordCount(), args);
     }
 }
