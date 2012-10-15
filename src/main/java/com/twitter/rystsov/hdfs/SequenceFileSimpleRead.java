@@ -15,27 +15,15 @@ import java.net.URISyntaxException;
  * User: Denis Rystsov
  */
 public class SequenceFileSimpleRead {
-    static String[] DATA = {
-            "I must not fear.",
-            "Fear is the mind-killer.",
-            "Fear is the little-death that brings total obliteration.",
-            "I will face my fear.",
-            "I will permit it to pass over me and through me.",
-            "And when it has gone past I will turn the inner eye to see its path.",
-            "Where the fear has gone there will be nothing.",
-            "Only I will remain.",
-    };
-
-
     public static void main(String[] args) throws URISyntaxException, IOException, IllegalAccessException, InstantiationException {
-        String to = args[0];
+        String from = args[0];
         Configuration conf = new Configuration();
-        FileSystem fs = FileSystem.get(URI.create(to), conf);
+        FileSystem fs = FileSystem.get(URI.create(from), conf);
 
         SequenceFile.Reader reader = null;
 
         try {
-            reader = new SequenceFile.Reader(fs, new Path(to), conf);
+            reader = new SequenceFile.Reader(fs, new Path(from), conf);
             Writable key = (Writable)reader.getKeyClass().newInstance();
             Writable value = (Writable)reader.getValueClass().newInstance();
 
@@ -50,7 +38,7 @@ public class SequenceFileSimpleRead {
             System.out.println("Data:");
 
             while (reader.next(key, value)) {
-                System.out.println("\t" + key.toString() + "\t" + value.toString());
+                System.out.println("\t\"" + key.toString() + "\"\t\"" + value.toString() + "\"");
             }
         } finally {
             // ignore null & IOExceptions

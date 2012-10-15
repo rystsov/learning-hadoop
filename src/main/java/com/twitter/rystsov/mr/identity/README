@@ -1,0 +1,3 @@
+This example demonstrate two ways to pack a text file to SequenceFile of LongWritable and Text
+  * using Java
+  * using Streaming

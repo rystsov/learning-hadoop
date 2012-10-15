@@ -25,7 +25,6 @@ import java.util.regex.Pattern;
 public class MultipulOutputExample extends Configured implements Tool {
     public static class MultipleMapper extends Mapper<LongWritable, Text, Text, LongWritable> {
         Pattern pattern = null;
-        // is it thread-safe?
         MultipleOutputs multipleOutputs;
 
         @Override()

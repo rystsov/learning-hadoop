@@ -1,10 +1,7 @@
-package com.twitter.rystsov.tools;
+package com.twitter.rystsov.mr.identity.java;
 
-import com.twitter.rystsov.mr.lib.input.WholeFileInputFormat;
 import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.io.BytesWritable;
-import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
@@ -15,28 +12,23 @@ import org.apache.hadoop.util.ToolRunner;
 /**
  * User: Denis Rystsov
  */
-public class PackFilesToSeq extends Configured implements Tool {
+public class IdentityMap extends Configured implements Tool{
     @Override
     public int run(String[] args) throws Exception {
         Job job = new Job(getConf());
-        job.setJarByClass(PackFilesToSeq.class);
-
-        job.setInputFormatClass(WholeFileInputFormat.class);
-        job.setOutputFormatClass(SequenceFileOutputFormat.class);
+        job.setJarByClass(IdentityMap.class);
 
         FileInputFormat.addInputPath(job, new Path(args[0]));
         FileOutputFormat.setOutputPath(job, new Path(args[1]));
 
         job.setNumReduceTasks(1);
-
-        job.setOutputKeyClass(Text.class);
-        job.setOutputValueClass(BytesWritable.class);
+        job.setOutputFormatClass(SequenceFileOutputFormat.class);
 
         job.waitForCompletion(true);
         return 0;
     }
 
-    public static void main(String[] args) throws Exception {
-        ToolRunner.run(new PackFilesToSeq(), args);
+    public static void main(String[] args) throws Exception, InterruptedException {
+        ToolRunner.run(new IdentityMap(), args);
     }
 }
